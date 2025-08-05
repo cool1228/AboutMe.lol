@@ -391,7 +391,7 @@ namespace SelectXYZ_Cheat
 
         private void RenderPlayerName(Player player, ESPSettings settings)
         {
-            var brush = GetBrush("White");
+            var brush = GetBrush(settings.NameColor);
             var box = player.BoundingBox;
             
             var textRect = new DrawingRectangleF(box.Left, box.Top - 20, box.Width, 15);
@@ -400,7 +400,7 @@ namespace SelectXYZ_Cheat
 
         private void RenderDistance(Player player, ESPSettings settings)
         {
-            var brush = GetBrush("White");
+            var brush = GetBrush(settings.DistanceColor);
             var box = player.BoundingBox;
             
             string distanceText = $"{(int)player.Distance}m";
