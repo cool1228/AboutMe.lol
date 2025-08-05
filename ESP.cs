@@ -37,11 +37,13 @@ namespace SelectXYZ_Cheat
         private string _boxFillColor = "Black";
         private string _headCircleColor = "White";
         private string _box3DColor = "Black";
-        private string _outlineColor = "#FF8080FF";
-        private string _chamsColor = "#FF00FFFF";
+        private string _outlineColor = "Red";
+        private string _chamsColor = "Cyan";
         private string _chinaHatColor = "Red";
-        private string _sonarColor = "#FF00FFFF";
-        private string _boxColor = "White";
+        private string _sonarColor = "Cyan";
+        private string _boxColor = "Red";
+        private string _nameColor = "White";
+        private string _distanceColor = "Yellow";
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -182,6 +184,18 @@ namespace SelectXYZ_Cheat
         {
             get => _boxColor;
             set { _boxColor = value; OnPropertyChanged(nameof(BoxColor)); }
+        }
+
+        public string NameColor
+        {
+            get => _nameColor;
+            set { _nameColor = value; OnPropertyChanged(nameof(NameColor)); }
+        }
+
+        public string DistanceColor
+        {
+            get => _distanceColor;
+            set { _distanceColor = value; OnPropertyChanged(nameof(DistanceColor)); }
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

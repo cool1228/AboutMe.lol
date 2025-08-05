@@ -248,7 +248,9 @@ namespace SelectXYZ_Cheat
             var colors = new[]
             {
                 Brushes.White, Brushes.Black, Brushes.Red, Brushes.Green, Brushes.Blue,
-                Brushes.Yellow, Brushes.Cyan, Brushes.Magenta, Brushes.Orange, Brushes.Purple
+                Brushes.Yellow, Brushes.Cyan, Brushes.Magenta, Brushes.Orange, Brushes.Purple,
+                Brushes.Pink, Brushes.Lime, Brushes.Gold, Brushes.Silver, Brushes.Violet,
+                Brushes.Teal, Brushes.Navy, Brushes.Maroon
             };
 
             var window = new ColorPickerWindow(colors);
@@ -279,9 +281,15 @@ namespace SelectXYZ_Cheat
                 "Cyan" => Brushes.Cyan,
                 "Magenta" => Brushes.Magenta,
                 "Orange" => Brushes.Orange,
-                "Purple" => new SolidColorBrush(Color.FromRgb(110, 69, 226)),
-                "#FF8080FF" => new SolidColorBrush(Color.FromRgb(128, 128, 255)),
-                "#FF00FFFF" => Brushes.Cyan,
+                "Purple" => Brushes.Purple,
+                "Pink" => Brushes.Pink,
+                "Lime" => Brushes.Lime,
+                "Gold" => Brushes.Gold,
+                "Silver" => Brushes.Silver,
+                "Violet" => Brushes.Violet,
+                "Teal" => Brushes.Teal,
+                "Navy" => Brushes.Navy,
+                "Maroon" => Brushes.Maroon,
                 _ => Brushes.White
             };
         }

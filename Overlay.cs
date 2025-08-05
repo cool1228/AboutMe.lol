@@ -13,6 +13,7 @@ using DWrite = SharpDX.DirectWrite;
 using SharpDXColor = SharpDX.Color;
 using DrawingRectangleF = SharpDX.RectangleF;
 using SharpDXVector2 = SharpDX.Vector2;
+using SystemVector2 = System.Numerics.Vector2;
 
 namespace SelectXYZ_Cheat
 {
@@ -172,7 +173,15 @@ namespace SelectXYZ_Cheat
                 ["Cyan"] = new SolidColorBrush(renderTarget, SharpDXColor.Cyan),
                 ["Magenta"] = new SolidColorBrush(renderTarget, SharpDXColor.Magenta),
                 ["Purple"] = new SolidColorBrush(renderTarget, new SharpDXColor(110, 69, 226)),
-                ["Orange"] = new SolidColorBrush(renderTarget, SharpDXColor.Orange)
+                ["Orange"] = new SolidColorBrush(renderTarget, SharpDXColor.Orange),
+                ["Pink"] = new SolidColorBrush(renderTarget, new SharpDXColor(255, 192, 203)),
+                ["Lime"] = new SolidColorBrush(renderTarget, new SharpDXColor(0, 255, 0)),
+                ["Gold"] = new SolidColorBrush(renderTarget, new SharpDXColor(255, 215, 0)),
+                ["Silver"] = new SolidColorBrush(renderTarget, new SharpDXColor(192, 192, 192)),
+                ["Violet"] = new SolidColorBrush(renderTarget, new SharpDXColor(238, 130, 238)),
+                ["Teal"] = new SolidColorBrush(renderTarget, new SharpDXColor(0, 128, 128)),
+                ["Navy"] = new SolidColorBrush(renderTarget, new SharpDXColor(0, 0, 128)),
+                ["Maroon"] = new SolidColorBrush(renderTarget, new SharpDXColor(128, 0, 0))
             };
         }
 
@@ -405,7 +414,7 @@ namespace SelectXYZ_Cheat
             var headPos = player.HeadScreenPosition;
             
             float radius = player.BoundingBox.Width * 0.15f;
-            var ellipse = new Ellipse(new Vector2(headPos.X, headPos.Y), radius, radius);
+            var ellipse = new Ellipse(new SharpDXVector2(headPos.X, headPos.Y), radius, radius);
             renderTarget.DrawEllipse(ellipse, brush, 2);
         }
 
