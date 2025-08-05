@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -11,6 +10,9 @@ using SharpDX.DirectWrite;
 using SharpDX.DXGI;
 using D2D1 = SharpDX.Direct2D1;
 using DWrite = SharpDX.DirectWrite;
+using SharpDXColor = SharpDX.Color;
+using DrawingRectangleF = SharpDX.RectangleF;
+using SharpDXVector2 = SharpDX.Vector2;
 
 namespace SelectXYZ_Cheat
 {
@@ -161,16 +163,16 @@ namespace SelectXYZ_Cheat
         {
             brushes = new Dictionary<string, SolidColorBrush>
             {
-                ["White"] = new SolidColorBrush(renderTarget, Color.White),
-                ["Black"] = new SolidColorBrush(renderTarget, Color.Black),
-                ["Red"] = new SolidColorBrush(renderTarget, Color.Red),
-                ["Green"] = new SolidColorBrush(renderTarget, Color.Green),
-                ["Blue"] = new SolidColorBrush(renderTarget, Color.Blue),
-                ["Yellow"] = new SolidColorBrush(renderTarget, Color.Yellow),
-                ["Cyan"] = new SolidColorBrush(renderTarget, Color.Cyan),
-                ["Magenta"] = new SolidColorBrush(renderTarget, Color.Magenta),
-                ["Purple"] = new SolidColorBrush(renderTarget, new Color(110, 69, 226)),
-                ["Orange"] = new SolidColorBrush(renderTarget, Color.Orange)
+                ["White"] = new SolidColorBrush(renderTarget, SharpDXColor.White),
+                ["Black"] = new SolidColorBrush(renderTarget, SharpDXColor.Black),
+                ["Red"] = new SolidColorBrush(renderTarget, SharpDXColor.Red),
+                ["Green"] = new SolidColorBrush(renderTarget, SharpDXColor.Green),
+                ["Blue"] = new SolidColorBrush(renderTarget, SharpDXColor.Blue),
+                ["Yellow"] = new SolidColorBrush(renderTarget, SharpDXColor.Yellow),
+                ["Cyan"] = new SolidColorBrush(renderTarget, SharpDXColor.Cyan),
+                ["Magenta"] = new SolidColorBrush(renderTarget, SharpDXColor.Magenta),
+                ["Purple"] = new SolidColorBrush(renderTarget, new SharpDXColor(110, 69, 226)),
+                ["Orange"] = new SolidColorBrush(renderTarget, SharpDXColor.Orange)
             };
         }
 
@@ -189,7 +191,7 @@ namespace SelectXYZ_Cheat
             if (disposed) return;
 
             renderTarget.BeginDraw();
-            renderTarget.Clear(Color.Transparent);
+            renderTarget.Clear(SharpDXColor.Transparent);
 
             var players = ESPManager.Instance.GetPlayers();
             var settings = ESPManager.Instance.Settings;
@@ -249,7 +251,7 @@ namespace SelectXYZ_Cheat
             var outlineBrush = GetBrush(settings.OutlineColor);
             var box = player.BoundingBox;
 
-            var rect = new RectangleF(box.Left, box.Top, box.Width, box.Height);
+            var rect = new DrawingRectangleF(box.Left, box.Top, box.Width, box.Height);
 
             switch (settings.BoxType)
             {
@@ -281,20 +283,20 @@ namespace SelectXYZ_Cheat
             float cornerSize = Math.Min(box.Width, box.Height) * 0.2f;
 
             // Top-left corner
-            renderTarget.DrawLine(new Vector2(box.Left, box.Top), new Vector2(box.Left + cornerSize, box.Top), brush, 2);
-            renderTarget.DrawLine(new Vector2(box.Left, box.Top), new Vector2(box.Left, box.Top + cornerSize), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(box.Left, box.Top), new SharpDXVector2(box.Left + cornerSize, box.Top), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(box.Left, box.Top), new SharpDXVector2(box.Left, box.Top + cornerSize), brush, 2);
 
             // Top-right corner
-            renderTarget.DrawLine(new Vector2(box.Right, box.Top), new Vector2(box.Right - cornerSize, box.Top), brush, 2);
-            renderTarget.DrawLine(new Vector2(box.Right, box.Top), new Vector2(box.Right, box.Top + cornerSize), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(box.Right, box.Top), new SharpDXVector2(box.Right - cornerSize, box.Top), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(box.Right, box.Top), new SharpDXVector2(box.Right, box.Top + cornerSize), brush, 2);
 
             // Bottom-left corner
-            renderTarget.DrawLine(new Vector2(box.Left, box.Bottom), new Vector2(box.Left + cornerSize, box.Bottom), brush, 2);
-            renderTarget.DrawLine(new Vector2(box.Left, box.Bottom), new Vector2(box.Left, box.Bottom - cornerSize), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(box.Left, box.Bottom), new SharpDXVector2(box.Left + cornerSize, box.Bottom), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(box.Left, box.Bottom), new SharpDXVector2(box.Left, box.Bottom - cornerSize), brush, 2);
 
             // Bottom-right corner
-            renderTarget.DrawLine(new Vector2(box.Right, box.Bottom), new Vector2(box.Right - cornerSize, box.Bottom), brush, 2);
-            renderTarget.DrawLine(new Vector2(box.Right, box.Bottom), new Vector2(box.Right, box.Bottom - cornerSize), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(box.Right, box.Bottom), new SharpDXVector2(box.Right - cornerSize, box.Bottom), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(box.Right, box.Bottom), new SharpDXVector2(box.Right, box.Bottom - cornerSize), brush, 2);
         }
 
         private void Render3DBox(Player player, SolidColorBrush brush)
@@ -304,18 +306,18 @@ namespace SelectXYZ_Cheat
             float depth = box.Width * 0.3f;
 
             // Front face
-            var frontRect = new RectangleF(box.Left, box.Top, box.Width, box.Height);
+            var frontRect = new DrawingRectangleF(box.Left, box.Top, box.Width, box.Height);
             renderTarget.DrawRectangle(frontRect, brush, 2);
 
             // Back face (offset)
-            var backRect = new RectangleF(box.Left - depth, box.Top - depth, box.Width, box.Height);
+            var backRect = new DrawingRectangleF(box.Left - depth, box.Top - depth, box.Width, box.Height);
             renderTarget.DrawRectangle(backRect, brush, 1);
 
             // Connect corners
-            renderTarget.DrawLine(new Vector2(box.Left, box.Top), new Vector2(box.Left - depth, box.Top - depth), brush, 1);
-            renderTarget.DrawLine(new Vector2(box.Right, box.Top), new Vector2(box.Right - depth, box.Top - depth), brush, 1);
-            renderTarget.DrawLine(new Vector2(box.Left, box.Bottom), new Vector2(box.Left - depth, box.Bottom - depth), brush, 1);
-            renderTarget.DrawLine(new Vector2(box.Right, box.Bottom), new Vector2(box.Right - depth, box.Bottom - depth), brush, 1);
+            renderTarget.DrawLine(new SharpDXVector2(box.Left, box.Top), new SharpDXVector2(box.Left - depth, box.Top - depth), brush, 1);
+            renderTarget.DrawLine(new SharpDXVector2(box.Right, box.Top), new SharpDXVector2(box.Right - depth, box.Top - depth), brush, 1);
+            renderTarget.DrawLine(new SharpDXVector2(box.Left, box.Bottom), new SharpDXVector2(box.Left - depth, box.Bottom - depth), brush, 1);
+            renderTarget.DrawLine(new SharpDXVector2(box.Right, box.Bottom), new SharpDXVector2(box.Right - depth, box.Bottom - depth), brush, 1);
         }
 
         private void RenderSkeleton(Player player, ESPSettings settings)
@@ -331,19 +333,19 @@ namespace SelectXYZ_Cheat
             float bottomY = box.Bottom;
 
             // Head to neck
-            renderTarget.DrawLine(new Vector2(centerX, headY), new Vector2(centerX, neckY), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(centerX, headY), new SharpDXVector2(centerX, neckY), brush, 2);
             
             // Torso
-            renderTarget.DrawLine(new Vector2(centerX, neckY), new Vector2(centerX, torsoY), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(centerX, neckY), new SharpDXVector2(centerX, torsoY), brush, 2);
             
             // Arms
             float armSpan = box.Width * 0.8f;
-            renderTarget.DrawLine(new Vector2(centerX - armSpan/2, neckY + box.Height * 0.1f), 
-                                new Vector2(centerX + armSpan/2, neckY + box.Height * 0.1f), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(centerX - armSpan/2, neckY + box.Height * 0.1f), 
+                                new SharpDXVector2(centerX + armSpan/2, neckY + box.Height * 0.1f), brush, 2);
             
             // Legs
-            renderTarget.DrawLine(new Vector2(centerX, torsoY), new Vector2(centerX - box.Width * 0.2f, bottomY), brush, 2);
-            renderTarget.DrawLine(new Vector2(centerX, torsoY), new Vector2(centerX + box.Width * 0.2f, bottomY), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(centerX, torsoY), new SharpDXVector2(centerX - box.Width * 0.2f, bottomY), brush, 2);
+            renderTarget.DrawLine(new SharpDXVector2(centerX, torsoY), new SharpDXVector2(centerX + box.Width * 0.2f, bottomY), brush, 2);
         }
 
         private void RenderHealthBar(Player player, ESPSettings settings)
@@ -358,12 +360,12 @@ namespace SelectXYZ_Cheat
             float barY = box.Top;
 
             // Background
-            var bgRect = new RectangleF(barX, barY, barWidth, barHeight);
+            var bgRect = new DrawingRectangleF(barX, barY, barWidth, barHeight);
             renderTarget.FillRectangle(bgRect, backgroundBrush);
 
             // Health
             float healthHeight = barHeight * player.HealthPercentage;
-            var healthRect = new RectangleF(barX, barY + barHeight - healthHeight, barWidth, healthHeight);
+            var healthRect = new DrawingRectangleF(barX, barY + barHeight - healthHeight, barWidth, healthHeight);
             renderTarget.FillRectangle(healthRect, healthBrush);
 
             // Border
@@ -373,7 +375,7 @@ namespace SelectXYZ_Cheat
             if (settings.HealthNumber)
             {
                 string healthText = $"{(int)player.Health}";
-                var textRect = new RectangleF(barX - 30, barY + barHeight/2 - 6, 25, 12);
+                var textRect = new DrawingRectangleF(barX - 30, barY + barHeight/2 - 6, 25, 12);
                 renderTarget.DrawText(healthText, textFormats["Small"], textRect, GetBrush("White"));
             }
         }
@@ -383,7 +385,7 @@ namespace SelectXYZ_Cheat
             var brush = GetBrush("White");
             var box = player.BoundingBox;
             
-            var textRect = new RectangleF(box.Left, box.Top - 20, box.Width, 15);
+            var textRect = new DrawingRectangleF(box.Left, box.Top - 20, box.Width, 15);
             renderTarget.DrawText(player.Name, textFormats["Default"], textRect, brush, DrawTextOptions.None, MeasuringMode.Natural);
         }
 
@@ -393,7 +395,7 @@ namespace SelectXYZ_Cheat
             var box = player.BoundingBox;
             
             string distanceText = $"{(int)player.Distance}m";
-            var textRect = new RectangleF(box.Left, box.Bottom + 5, box.Width, 15);
+            var textRect = new DrawingRectangleF(box.Left, box.Bottom + 5, box.Width, 15);
             renderTarget.DrawText(distanceText, textFormats["Small"], textRect, brush);
         }
 
