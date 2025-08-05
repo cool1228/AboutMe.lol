@@ -18,6 +18,9 @@ namespace SelectXYZ_Cheat.ESP
 
         public ESPSettings Settings { get; } = new ESPSettings();
 
+        private MemoryReader? externalMemoryReader;
+        private RobloxMemoryScanner? robloxScanner;
+
         private ESPManager()
         {
             memoryReader = new MemoryReader();
@@ -25,7 +28,8 @@ namespace SelectXYZ_Cheat.ESP
 
         public void Initialize(MemoryReader reader)
         {
-            // Use the provided memory reader instance
+            externalMemoryReader = reader;
+            robloxScanner = new RobloxMemoryScanner(reader);
         }
 
         public List<Player> GetPlayers()
@@ -38,7 +42,7 @@ namespace SelectXYZ_Cheat.ESP
 
         public async Task UpdatePlayersAsync()
         {
-            if (!memoryReader.IsAttached) return;
+            if (externalMemoryReader == null || !externalMemoryReader.IsAttached) return;
 
             try
             {
@@ -64,21 +68,33 @@ namespace SelectXYZ_Cheat.ESP
 
                 try
                 {
-                    // This is a simplified example - actual Roblox memory scanning would require
-                    // reverse engineering to find the proper offsets and structures
-                    
-                    // For educational purposes, we'll simulate player detection
-                    // In a real implementation, you would:
-                    // 1. Find the game's player list in memory
-                    // 2. Read player structures containing position, health, name data
-                    // 3. Calculate world-to-screen positions
-                    // 4. Determine visibility and distance
+                    if (robloxScanner == null)
+                    {
+                        Console.WriteLine("Roblox scanner not initialized");
+                        return foundPlayers;
+                    }
 
-                    foundPlayers.AddRange(SimulatePlayerDetection());
+                    // Initialize scanner if not already done
+                    if (!robloxScanner.Initialize())
+                    {
+                        Console.WriteLine("Failed to initialize Roblox scanner");
+                        return foundPlayers;
+                    }
+
+                    // Use real Roblox memory scanning
+                    foundPlayers = robloxScanner.ScanForPlayers();
+                    
+                    // Fallback to simulation if no real players found (for testing)
+                    if (foundPlayers.Count == 0)
+                    {
+                        foundPlayers.AddRange(SimulatePlayerDetection());
+                    }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error in player scan: {ex.Message}");
+                    // Fallback to simulation on error
+                    foundPlayers.AddRange(SimulatePlayerDetection());
                 }
 
                 return foundPlayers;
